@@ -8,8 +8,14 @@ before_script:
   - echo 'Cloning Lib_UNO library using tm-build account'
   - git clone https://tm-build:$git_pwd@github.com/TMContent/Lib_UNO.git
   - git clone https://tm-build:$git_pwd@github.com/TMContent/Lib_UNO-json.git
+  - git status
   - ls
   - ls Lib_UNO-json
 
 after_script:
   - sh -e ./bin/after.sh
+  - ls Lib_UNO-json
+  - cd Lib_UNO-json
+  - git status
+  - git add -A
+  - git commit 'Comming changes'
