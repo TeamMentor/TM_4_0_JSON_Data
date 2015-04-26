@@ -1,15 +1,14 @@
 sudo: false
 language: node_js
 node_js:
-- 0.1
+  - "0.12"
+  
 before_script:
-- echo 'before script'
-- sh -e ./bin/before.sh
+  - sh -e ./bin/before.sh
 
-after_script:
-- echo 'after script'
-- sh -e ./bin/after.sh
+after_script:§
+  - sh -e ./bin/after.sh
 
 notifications:
   slack:
-    secure: Zq3PlPkli6+YeBz84vjr0iJEaSwM7cilAYh1e2NTXUY1bL2s/1BL2RTWqDKwJw8M48JsmNdjLewX9ceQClDGojWpjmtJ0e3OrO02RPdYE/8KYzTlDdZ/NfoCNPJCR3saHnASoJLjAekNeT4HJsspQTxRk4oPNJ+gyJ4eERgwQR8=
+    secure: d9spkOFp62ic85Oovs/vuHOAAMCNXdmkvMSFeJGqpD70NxixNm3EJNAg9u34dq1OvyPkItbjHZZU6B/CEUwSTPcIsyJOsSO1g95hYT95LXOtvVdqXnLQL92ADZ/zT8bI5yYWu/E+JIeEyr8sbEMXBU5KVkxHfWSHo7xugNdhL/A=
