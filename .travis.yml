@@ -20,5 +20,5 @@ after_script:
   - git config user.name "tm-build (at travis)"
   - git status
   - git add -A
-  - git commit -m 'Comming changes'
+  - git commit -m 'Committing changes (made at travis)'
   - git push origin master

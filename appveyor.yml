@@ -27,5 +27,15 @@ test_script:
   # run tests
   - npm test
 
+on_finish:
+  - echo commiting changes to
+  - git config user.email "dcruz+tm-build@securityinnovation.com"
+  - git config user.name "m-build (at appveyor)"
+  - git status
+  - git add -A
+  - git commit -m 'Committing changes (made at appveyor)'
+  - git push origin master
+
+
 # Don't actually build.
 build: off
