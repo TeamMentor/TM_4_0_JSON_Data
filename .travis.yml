@@ -5,8 +5,8 @@ node_js:
 
 before_script:
   - ls
-  - ls ../
-#  - cat $DEPLOY_KEY > .travis/deploy_key.pem
+  - ls -al ../
+  - cat $DEPLOY_KEY > ../travis/deploy_key.pem
 #  - chmod 600 .travis/deploy_key.pem
 #  - cat .travis/deploy_key.pem
 #- ssh-add .travis/deploy_key.pem
