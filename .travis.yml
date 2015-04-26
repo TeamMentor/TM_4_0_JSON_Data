@@ -7,7 +7,9 @@ before_script:
   # for this to work the travis git_pwd environment value must be set for the tm-build pwd
   - echo 'Cloning Lib_UNO library using tm-build account'
   - git clone https://tm-build:$git_pwd@github.com/TMContent/Lib_UNO.git
-  - ls -R Lib_UNO
+  - git submodule init
+  - ls
+  - ls Lib_UNO-json
 
 after_script:
   - sh -e ./bin/after.sh
