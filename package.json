@@ -1,0 +1,19 @@
+{
+  "name": "TM_4_0_JSON_Data",
+  "version": "0.0.1",
+  "description": "Transforms Lib_Uno xml files into JSON files ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TeamMentor/TM_4_0_JSON_Data.git"
+  },
+  "author": "Dinis Cruz <dinis.cruz@owasp.org> (http://blog.diniscruz.com/)",
+  "license": "TM Commercial License",
+  "bugs": {
+    "url": "https://github.com/TeamMentor/TM_4_0_JSON_Data/issues"
+  },
+  "homepage": "https://github.com/TeamMentor/TM_4_0_JSON_Data"
+}
