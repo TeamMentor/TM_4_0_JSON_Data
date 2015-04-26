@@ -37,15 +37,6 @@ describe '| Content-Service |', ->
           json_Folder   .assert_Is(library_Folder.append('-json'))
           done()
 
-
-  it 'load_Library_Data',(done)->
-    @timeout(20000)         # give it time to clone
-    using contentService,->
-      @.library_Folder (folder)=>
-        @.load_Library_Data (result)->
-          folder.assert_Contains(folder)
-          done()
-
   it 'convert_Xml_To_Json', (done)->
     @timeout 15000
     contentService.json_Files (files)->

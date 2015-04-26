@@ -22,15 +22,6 @@ class Content_Service
       json_Folder = library_Folder.append('-json')
       callback json_Folder, library_Folder
 
-  load_Library_Data: (callback)=>
-    @.xml_Files (xmlFiles)=>
-      if xmlFiles.not_Empty() and @.force_Reload is false
-        callback("data load skipped")
-      else
-        console.log "[load_Library_Data] ERROR: Could not find xml files to parse"
-
-
-
   convert_Xml_To_Json: (callback)=>
     @.json_Files (json_Files)=>
       if json_Files.not_Empty() and @.force_Reload is false
