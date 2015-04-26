@@ -6,7 +6,7 @@ node_js:
 before_script:
   - sh -e ./bin/before.sh
 
-after_script:§
+after_script:
   - sh -e ./bin/after.sh
 
 notifications:
