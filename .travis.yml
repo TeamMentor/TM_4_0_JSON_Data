@@ -1,21 +1,22 @@
 sudo: false
 language: node_js
-node_js:
-  - "0.12"
+#node_js:
+#  - "0.12"
+
+# for this to work the travis git_pwd environment value must be set for the tm-build pwd
 
 before_script:
-  # for this to work the travis git_pwd environment value must be set for the tm-build pwd
   - echo 'Cloning Lib_UNO library using tm-build account'
   - git clone https://tm-build:$git_pwd@github.com/TMContent/Lib_UNO.git
-  - git clone https://tm-build:$git_pwd@github.com/TMContent/Lib_UNO-json.git
+  - git clone https://tm-build:$git_pwd@github.com/tm-build/Lib_UNO-json.git
   - git status
   - ls
   - ls Lib_UNO-json
 
 after_script:
-  - sh -e ./bin/after.sh
   - ls Lib_UNO-json
   - cd Lib_UNO-json
   - git status
   - git add -A
-  - git commit 'Comming changes'
+  - git commit -m 'Comming changes'
+  - git push origin master
