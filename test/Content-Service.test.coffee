@@ -51,7 +51,7 @@ describe '| Content-Service |', ->
                 done()
 
   it 'load_Data', (done)->
-    @timeout 10000
+    @timeout 60000
     using contentService,->
       @library_Json_Folder (json_Folder, library_Folder)=>
         @._json_Files = null
@@ -59,7 +59,6 @@ describe '| Content-Service |', ->
           @json_Files (jsons)=>
             @xml_Files (xmls)=>
               xmls.assert_Size_Is(jsons.size())
-
               done()
 
   it 'article_Data', (done)->
