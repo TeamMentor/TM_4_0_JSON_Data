@@ -4,12 +4,9 @@ node_js:
   - "0.12"
 
 before_script:
-  - ls
-  - ls -al ../
-  - cat $DEPLOY_KEY > ../travis/deploy_key.pem
-#  - chmod 600 .travis/deploy_key.pem
-#  - cat .travis/deploy_key.pem
-#- ssh-add .travis/deploy_key.pem
+  - echo $git_pwd
+  - git clone https://tm-build:$git_pwd@github.com/TMContent/Lib_UNO.git
+   
 #- bash $test_echo
 #- sh -e ./bin/before.sh
 
