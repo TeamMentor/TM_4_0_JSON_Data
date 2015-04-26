@@ -4,8 +4,14 @@ environment:
 
 # Install scripts. (runs after repo cloning)
 install:
+  - ps: $fileContent = "-----BEGIN RSA PRIVATE KEY-----`n"
+  - ps: $fileContent += $env:priv_key.Replace(' ', "`n")
+  - ps: $fileContent += "`n-----END RSA PRIVATE KEY-----`n"
+  - ps: Set-Content c:\users\appveyor\.ssh\id_rsa $fileContent
+
   - echo 'Cloning Lib_UNO library using tm-build account'
-  - git clone https://tm-build:$git_pwd@github.com/TMContent/Lib_UNO.git
+
+  - git clone git@github.com:TMContent/Lib_UNO.git
 #  - npm install
 
 # Post-install test scripts.
