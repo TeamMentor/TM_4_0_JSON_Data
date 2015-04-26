@@ -6,8 +6,13 @@ node_js:
 secure: "mVfvXELEUv8yxQ7he4wbCYLym1XMSDAbMN1D62YvQ4lbKJ8WIYLuMXG5MO6Lfbppng26dC4X7D3Z1ORg4U0KO1TLnfUyJWPyPsLMeczx0uO8uwVq85SbBeGIlFB1k5EOmWfwCStFTsOLpf9CftD3s08R4DzuK/Uqzl8i7H5s7gQ="
 
 before_script:
-  - bash $test_echo
-  - sh -e ./bin/before.sh
+  - cat .travis/deploy_key.pem
+  - chmod 600 .travis/deploy_key.pem
+  - cat $DEPLOY_KEY > .travis/deploy_key.pem
+  - cat .travis/deploy_key.pem 
+#- ssh-add .travis/deploy_key.pem
+#- bash $test_echo
+#- sh -e ./bin/before.sh
 
 after_script:
   - sh -e ./bin/after.sh
