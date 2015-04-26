@@ -16,6 +16,8 @@ before_script:
 after_script:
   - ls Lib_UNO-json
   - cd Lib_UNO-json
+  - git config user.email "dcruz+tm-build@securityinnovation.com"
+  - git config user.name "tm-build (at travis)"
   - git status
   - git add -A
   - git commit -m 'Comming changes'
