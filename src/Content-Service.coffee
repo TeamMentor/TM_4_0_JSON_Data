@@ -8,10 +8,10 @@ async   = require('async')
 class Content_Service
   constructor: (options)->
     @.options        = options || {}
-    @.force_Reload   = false
-    @._json_Files     = null
-    @._xml_Files      = null
-    @.target_Repo     = @.options.target_Repo || "./Lib_UNO"
+    @.force_Reload   = true       # since this is now running on CI, we want to force reload
+    @._json_Files    = null
+    @._xml_Files     = null
+    @.target_Repo    = @.options.target_Repo || "./Lib_UNO"
 
   library_Folder: (callback)=>
       folder = process.cwd().path_Combine(@.target_Repo);
