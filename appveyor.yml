@@ -11,8 +11,8 @@ install:
 
   - echo 'Cloning Lib_UNO library using tm-build account'
 
-  - git clone git@github.com:TMContent/Lib_UNO.git quiet
-  - git clone git@github.com:tm-build/Lib_UNO-json.git
+  - git clone git@github.com:TMContent/Lib_UNO.git --quiet
+  - git clone git@github.com:tm-build/Lib_UNO-json.git --quiet
 
   - dir Lib_UNO
   - dir Lib_UNO-json
