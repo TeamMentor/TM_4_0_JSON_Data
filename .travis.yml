@@ -3,8 +3,9 @@ language: node_js
 node_js:
   - "0.12"
 
+secure: HPHuNT1Pi9cgSsddnSySM+L43BoEbwoPOQ67H4RqgfN+mvmjMsAh7jpQsVaEPnaK7Tv51/5xCH1Zekg+yDuEBL44ktduS53W8U8FD88RaxoahKVjwOHpveGQAVjRNVszESJI4Hw/iF4EakoJ/CiAqvHacTh5fGPFqtos+PB+Wuw=
+
 before_script:
-  secure: HPHuNT1Pi9cgSsddnSySM+L43BoEbwoPOQ67H4RqgfN+mvmjMsAh7jpQsVaEPnaK7Tv51/5xCH1Zekg+yDuEBL44ktduS53W8U8FD88RaxoahKVjwOHpveGQAVjRNVszESJI4Hw/iF4EakoJ/CiAqvHacTh5fGPFqtos+PB+Wuw=
   - sh -e ./bin/before.sh
 
 after_script:
