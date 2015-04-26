@@ -54,9 +54,8 @@ class Content_Service
      @json_Files (jsons)=>
       @xml_Files (xmls)=>
         if @force_Reload or xmls.empty() or jsons.size() isnt xmls.size()
-          @load_Library_Data =>
-            @convert_Xml_To_Json =>
-              callback()
+          @convert_Xml_To_Json =>
+            callback()
         else
           callback();
 
