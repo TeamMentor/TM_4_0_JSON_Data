@@ -4,9 +4,11 @@ node_js:
   - "0.12"
 
 before_script:
-  - cat $DEPLOY_KEY > .travis/deploy_key.pem
-  - chmod 600 .travis/deploy_key.pem
-  - cat .travis/deploy_key.pem
+  - ls
+  - ls ../
+#  - cat $DEPLOY_KEY > .travis/deploy_key.pem
+#  - chmod 600 .travis/deploy_key.pem
+#  - cat .travis/deploy_key.pem
 #- ssh-add .travis/deploy_key.pem
 #- bash $test_echo
 #- sh -e ./bin/before.sh
