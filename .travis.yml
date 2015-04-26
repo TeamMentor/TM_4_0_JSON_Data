@@ -4,15 +4,10 @@ node_js:
   - "0.12"
 
 before_script:
-  - echo $git_pwd
+  # for this to work the travis git_pwd environment value must be set for the tm-build pwd
+  - echo 'Cloning Lib_UNO library using tm-build account'
   - git clone https://tm-build:$git_pwd@github.com/TMContent/Lib_UNO.git
-   
-#- bash $test_echo
-#- sh -e ./bin/before.sh
+  - ls -R Lib_UNO
 
 after_script:
   - sh -e ./bin/after.sh
-
-notifications:
-  slack:
-    secure: d9spkOFp62ic85Oovs/vuHOAAMCNXdmkvMSFeJGqpD70NxixNm3EJNAg9u34dq1OvyPkItbjHZZU6B/CEUwSTPcIsyJOsSO1g95hYT95LXOtvVdqXnLQL92ADZ/zT8bI5yYWu/E+JIeEyr8sbEMXBU5KVkxHfWSHo7xugNdhL/A=
