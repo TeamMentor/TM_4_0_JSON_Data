@@ -29,6 +29,7 @@ test_script:
 
 on_finish:
   - echo commiting changes to
+  - cd Lib_UNO-json
   - git config user.email "dcruz+tm-build@securityinnovation.com"
   - git config user.name "m-build (at appveyor)"
   - git status
