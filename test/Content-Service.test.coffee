@@ -4,7 +4,7 @@ Content_Service = require '../src/Content-Service'
 
 #NOTE: for now the order of these tests mater since they create artifacts used (in sequence)
 
-describe '| 1. Content-Service |', ->
+describe '| Content-Service |', ->
 
   contentService = null
 
