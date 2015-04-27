@@ -1,6 +1,7 @@
 require 'fluentnode'
-xml2js  = require('xml2js')
-async   = require('async')
+path    = require 'path'
+xml2js  = require 'xml2js'
+async   = require 'async'
 
 ##Config_Service = require '../Config-Service'
 #Git_API        = require '../../api/Git-API'
@@ -13,14 +14,19 @@ class Content_Service
     @._xml_Files     = null
     @.target_Repo    = @.options.target_Repo || "./Lib_UNO"
 
-  library_Folder: (callback)=>
-      folder = process.cwd().path_Combine(@.target_Repo);
-      callback(folder)
+  article_Data: (articleId, callback) =>
+    @json_Files (jsonFiles) =>
+      article_File = jsonFile for jsonFile in jsonFiles when jsonFile.contains(articleId)
+      if article_File and article_File.file_Exists()
+        callback article_File.load_Json().TeamMentor_Article
+      else
+        callback null
 
-  library_Json_Folder: (callback)=>
-    @.library_Folder (library_Folder)=>
-      json_Folder = library_Folder.append('-json')
-      callback json_Folder, library_Folder
+  article_Ids: (callback)=>
+    @.json_Files (json_Files)=>
+      fileNames = (json_File.file_Name_Without_Extension() for json_File in json_Files)
+      article_Ids = (filename for filename in fileNames when filename.split('-').size() is 5)
+      callback article_Ids.take -1
 
   convert_Xml_To_Json: (callback)=>
     @.json_Files (json_Files)=>
@@ -49,6 +55,28 @@ class Content_Service
         @._json_Files = json_Folder.files_Recursive(".json")
         callback @._json_Files
 
+  library_Folder: (callback)=>
+      folder = process.cwd().path_Combine(@.target_Repo);
+      callback(folder)
+
+  articles_Html_Folder: (callback)=>
+    @.library_Folder (library_Folder)=>
+      folder = library_Folder.append "-json#{path.sep}Articles_Html"
+      folder.folder_Create()
+      callback folder, library_Folder
+
+  library_Json_Folder: (callback)=>
+    @.library_Folder (library_Folder)=>
+      folder = library_Folder.append "-json#{path.sep}Library"
+      folder.folder_Create()
+      callback folder, library_Folder
+
+  search_Data_Folder: (callback)=>
+    @.library_Folder (library_Folder)=>
+      folder = library_Folder.append "-json#{path.sep}Search_Data"
+      folder.folder_Create()
+      callback folder, library_Folder
+
   load_Data: (callback)=>
     @.library_Json_Folder (json_Folder, library_Folder)=>
      @json_Files (jsons)=>
@@ -67,12 +95,6 @@ class Content_Service
         @._xml_Files = library_Folder.files_Recursive(".xml")
         callback @._xml_Files
 
-  article_Data: (articleId, callback) =>
-    @json_Files (jsonFiles) =>
-      article_File = jsonFile for jsonFile in jsonFiles when jsonFile.contains(articleId)
-      if article_File and article_File.file_Exists()
-        callback article_File.load_Json().TeamMentor_Article
-      else
-        callback null
+
 
 module.exports = Content_Service

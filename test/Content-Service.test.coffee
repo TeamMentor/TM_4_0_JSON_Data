@@ -1,7 +1,10 @@
+path            = require 'path'
 async           = require 'async'
 Content_Service = require '../src/Content-Service'
 
-describe '| Content-Service |', ->
+#NOTE: for now the order of these tests mater since they create artifacts used (in sequence)
+
+describe '| 1. Content-Service |', ->
 
   contentService = null
 
@@ -25,8 +28,8 @@ describe '| Content-Service |', ->
     using contentService,->
       @.library_Folder (folder)->
         folder.assert_Folder_Exists()
-              .assert_Contains('Lib_UNO')
-              .assert_Contains(process.cwd())
+              .assert_Contains "Lib_UNO"
+              .assert_Contains process.cwd()
         done()
 
   it 'library_Json_Folder', (done)->
@@ -34,7 +37,15 @@ describe '| Content-Service |', ->
       @.library_Folder (folder)=>
         @.library_Json_Folder (json_Folder, library_Folder)->
           library_Folder.assert_Is(folder)
-          json_Folder   .assert_Is(library_Folder.append('-json'))
+          json_Folder   .assert_Is(library_Folder.append("-json#{path.sep}Library"))
+          done()
+
+  it 'Search_Data_Folder', (done)->
+    using contentService,->
+      @.library_Folder (folder)=>
+        @.search_Data_Folder (search_Data_Folder, library_Folder)->
+          library_Folder.assert_Is(folder)
+          search_Data_Folder   .assert_Is(library_Folder.append("-json#{path.sep}Search_Data"))
           done()
 
   it 'convert_Xml_To_Json', (done)->
@@ -74,4 +85,11 @@ describe '| Content-Service |', ->
           next()
 
       @.xml_Files (xml_Files)->
-        async.each xml_Files.take(10), check_File, done
+        async.each xml_Files.take(5), check_File, done
+
+  it 'article_Ids', (done)->
+    using contentService,->
+      @.json_Files (json_Files)=>
+        @.article_Ids (article_Ids)=>
+          json_Files.assert_Size_Is article_Ids.size() + 1  # because the library XML should not be included (in this case UNO.XML)
+          done();
