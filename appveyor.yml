@@ -16,7 +16,10 @@ install:
 
   - dir Lib_UNO
   - dir Lib_UNO-json
-
+  - rd /s /q .\Lib_UNO-json\Library
+  - rd /s /q .\Lib_UNO-json\Articles_Html
+  - rd /s /q .\Lib_UNO-json\Library
+  - dir Lib_UNO-json
   - npm install
 
 # Post-install test scripts.
