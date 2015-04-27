@@ -33,8 +33,8 @@ on_finish:
   - git config user.name "m-build (at appveyor)"
   - git status
   - git add -A
-  - git commit -m "Committing changes (made at appveyor)"
-  - git push origin master
+  - call git commit -m "Committing changes (made at appveyor)"
+  - call git push origin master
 
 
 # Don't actually build.
