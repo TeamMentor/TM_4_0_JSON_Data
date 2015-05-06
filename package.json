@@ -28,6 +28,7 @@
     "levelgraph": "^0.10.5",
     "markdown-it": "^4.2.0",
     "mocha": "^2.2.4",
+    "teammentor": "^0.1.2",
     "xml2js": "^0.4.8"
   }
 }
