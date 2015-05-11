@@ -43,7 +43,7 @@ class TM_Guidance
     importUtil = @importService.graph_Add_Data.new_Data_Import_Util()
 
     add_Metadata_Target = (target)=>
-      target_Value      = article_Data.Metadata.first()[target].first()
+      target_Value      = article_Data.Metadata?.first?()[target]?.first()
       if (target_Value)
         target_Global_Id = @.metadata_Queries[target]
         target_Id        = @.metadata_Queries[target_Value]
