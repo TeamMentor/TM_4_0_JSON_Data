@@ -110,10 +110,11 @@ class TM_Guidance
   import_Folder: (folder, next)=>
     @.importService.graph_Add_Data.add_Db_using_Type_Guid_Title 'Query', folder.guid, folder.title, (folderId)=>
       @.importService.graph.add folder.parent, 'contains-query', folderId, =>
-        @.import_Views folderId, folder.views , next
+        @.import_Views folderId, folder.views , =>
+          @.import_Folders folderId, folder.folders , next
 
   import_Folders: (parent, folders, next)=>
-    foldersToAdd = ({guid: folder.id, title: folder.name, parent:parent, views:folder.views} for folder in folders).take(take)
+    foldersToAdd = ({guid: folder.id, title: folder.name, parent:parent, views:folder.views, folders: folder.folders} for folder in folders).take(take)
     async.each foldersToAdd, @.import_Folder, -> next()
 
   import_Library: (guid, title, next)=>

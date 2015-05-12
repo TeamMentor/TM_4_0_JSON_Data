@@ -22,6 +22,9 @@ class Library_Import_Service
       for view in  json_Folder.view
         view_Articles = @add_Json_View folder.views, view
         all_Articles = all_Articles.concat(view_Articles)
+    if json_Folder.folder1
+      for sub_Folder in json_Folder.folder1
+        all_Articles = all_Articles.concat(@.add_Json_Folder folder.folders, sub_Folder)
 
     target_Folders.push folder
     all_Articles
