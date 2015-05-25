@@ -60,7 +60,7 @@ class TM_Guidance
       html       = article_Data.Content.first().Data.first()
       summary    = ""
       if (article_Data.Content.first()['$'].DataType.lower() is 'html')
-        $          = cheerio.load(html.substring(0,400))
+        $          = cheerio.load(html.substring(0,1050))
         summary    = $('p').text().substring(0,200).trim()
       else
         summary = html.substring(0,200).replace(/\*/g,'').replace(/\=/g,'')
