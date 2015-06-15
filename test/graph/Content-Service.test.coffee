@@ -2,7 +2,7 @@ path            = require 'path'
 async           = require 'async'
 Content_Service = require '../../src/graph/Content-Service'
 
-describe '| services | import | Content-Service |', ->
+describe.only '| services | import | Content-Service |', ->
 
   contentService = null
 

@@ -3,16 +3,13 @@ path    = require 'path'
 xml2js  = require 'xml2js'
 async   = require 'async'
 
-##Config_Service = require '../Config-Service'
-#Git_API        = require '../../api/Git-API'
-
 class Content_Service
   constructor: (options)->
     @.options        = options || {}
     @.force_Reload   = true       # since this is now running on CI, we want to force reload
     @._json_Files    = null
     @._xml_Files     = null
-    @.target_Repo    = @.options.target_Repo || "./Lib_UNO"
+    @.target_Repo    = global.config?.tm_graph?.folder_Lib_UNO
 
   article_Data: (articleId, callback) =>
     @json_Files (jsonFiles) =>
@@ -56,8 +53,7 @@ class Content_Service
         callback @._json_Files
 
   library_Folder: (callback)=>
-      folder = process.cwd().path_Combine(@.target_Repo);
-      callback(folder)
+      callback(@.target_Repo)
 
   articles_Html_Folder: (callback)=>
     @.library_Folder (library_Folder)=>

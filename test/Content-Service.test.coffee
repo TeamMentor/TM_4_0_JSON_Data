@@ -4,7 +4,7 @@ Content_Service = require '../src/Content-Service'
 
 #NOTE: for now the order of these tests mater since they create artifacts used (in sequence)
 
-describe '| Content-Service |', ->
+describe.only '| Content-Service |', ->
 
   contentService = null
 
@@ -14,22 +14,13 @@ describe '| Content-Service |', ->
   it 'constructor',->
     using contentService, ->
       @.options    .assert_Is {}
-      @.target_Repo.assert_Is './Lib_UNO'
-
-
-  it 'construtor (with params)',->
-    options = { target_Repo : 'abc'}
-    using new Content_Service(options), ->
-      @.options    .assert_Is(options)
-      @.target_Repo.assert_Is(options.target_Repo )
-
+      @.target_Repo.assert_Is global.config.tm_graph.folder_Lib_UNO
+                   .assert_Contains '/Lib_UNO'
 
   it 'library_Folder', (done)->
     using contentService,->
-      @.library_Folder (folder)->
-        folder.assert_Folder_Exists()
-              .assert_Contains "Lib_UNO"
-              .assert_Contains process.cwd()
+      @.library_Folder (folder)=>
+        folder.assert_Is @.target_Repo
         done()
 
   it 'library_Json_Folder', (done)->
@@ -61,7 +52,7 @@ describe '| Content-Service |', ->
                     .assert_Size_Is(jsons.size())
                 done()
 
-  it 'load_Data', (done)->
+  xit 'load_Data', (done)->
     @timeout 60000
     using contentService,->
       @library_Json_Folder (json_Folder, library_Folder)=>

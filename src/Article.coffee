@@ -5,24 +5,13 @@ Markdown_Service = require './render/Markdown-Service'
 
 class Article
 
-#  constructor: (importService)->
-#    @.importService  = importService || new Import_Service(name:'tm-uno')
   constructor: ()->
     @.contentService = new Content_Service()
 
   ids: (callback)=>
     @.contentService.article_Ids callback
-#    @.importService.graph_Find.find_Using_Is 'Article', (articles_Ids)=>
-#      callback articles_Ids
-
-#  graph_Data: (article_Id, callback)=>
-#    @.importService.graph_Find.get_Subject_Data article_Id, callback
 
   file_Path: (article_Id, callback)=>
-    #log article_Id
-    #@.graph_Data article_Id, (article_Data)=>
-    #  if article_Data
-    #    guid = article_Data.guid
     @.contentService.json_Files (jsonFiles)=>
       path = jsonFile for jsonFile in jsonFiles when jsonFile.contains article_Id
       callback path
