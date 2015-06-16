@@ -1,3 +1,5 @@
+return
+
 expect          = require('chai'     ).expect
 Data_Import_Util = require('./../../src/graph/Data-Import-Util')
 

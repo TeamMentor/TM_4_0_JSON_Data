@@ -46,16 +46,23 @@ class Search_Artifacts_Service
         callback search_Mappings
 
   parse_Article: (article_Id, callback)=>
-    @.content_Service.articles_Html_Folder (folder)=>
-      key = folder.path_Combine "#{article_Id}.json"
-      if key.file_Exists()
-        setImmediate ->
-          callback key.load_Json(), false
-      else
-        @.parse_Article_Html article_Id, (data)=>
+    folder = @.content_Service.folder_Articles_Html()
+
+    key = folder.path_Combine "#{article_Id}.json"
+
+    callback null, true
+    log key.file_Contents().size()
+    return
+
+    if key.file_Exists() and false
+      setImmediate ->
+        callback key.load_Json(), false
+    else
+      @.parse_Article_Html article_Id, (data)=>
+        if (data)
           data.save_Json key
-          setImmediate ->
-            callback data, true
+        setImmediate ->
+          callback data, true
 
   parse_Articles: (article_Ids, callback)=>
     results = []
@@ -67,8 +74,8 @@ class Search_Artifacts_Service
       @.parse_Article article_Id, (data, showLog)->
         count++
         if showLog and (count %% 50) is 0
-          log "[#{count}/#{total}] Parsed html for #{article_Id}"
-        results.push data
+          log "[#{count}/#{total}] mapping #{article_Id}"
+        #results.push data
         next()
 
     async.eachSeries article_Ids , map_Article, ()=>
@@ -83,8 +90,9 @@ class Search_Artifacts_Service
       links    : []
 
     @.article.html article_Id, (html)=>
+      return callback null if not html
       data.html     = html
-      data.checksum = checksum(html,'sha1')
+      data.checksum = html.checksum() # checksum(html,'sha1')
 
       $ = cheerio.load html
 

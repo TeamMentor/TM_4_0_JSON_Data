@@ -1,3 +1,4 @@
+return
 Article = require '../src/Article'
 
 describe '| Article |',->
