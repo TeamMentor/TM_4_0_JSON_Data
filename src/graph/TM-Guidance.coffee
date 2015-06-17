@@ -131,7 +131,7 @@ class TM_Guidance
                 @.import_Views library_Id, library.views, =>
                   @.importService.graph.closeDb =>
                     @.importService.graph.openDb =>
-                      "[tm-uno] finished loading data".log()
+                      #"[tm-uno] finished loading data".log()
                       callback()
 
   reload_Data: (skip_If_Exists, callback)=>

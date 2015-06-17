@@ -12,23 +12,42 @@ content_Service  = new Content_Service()
 importService    = new Import_Service(name: '_tm_uno_test')
 tm_Guidance      = new TM_Guidance { importService : importService}
 
-"... convert Xml files into Json".log()
-content_Service.convert_Xml_To_Json ->
-  article_Ids = content_Service.article_Ids()
+timer_Msg   = '\n... Data mapping and reload was done in';
+article_Ids = null
 
-  "... parsing articles json".log()
+console.time timer_Msg
+
+
+step_1 = (next)->
+  "[step 1] convert Xml files into Json".log()
+  content_Service.convert_Xml_To_Json ->
+    article_Ids = content_Service.article_Ids()
+    next()
+
+step_2 = (next)->
+  "[step 2] parsing articles json".log()
   search_Artifacts.parse_Articles article_Ids, ->
+    next()
 
-    "... creating tripplets from metadata".log()
-    tm_Guidance.load_Data ->
-      importService.graph.allData (data)=>
-        content_Service.save_Triplets data, ->
-          "... deleteting temp db".log()
-          tm_Guidance.importService.graph.deleteDb ->
+step_3 = (next)->
+  "[step 3] creating tripplets from metadata".log()
+  tm_Guidance.load_Data ->
+    importService.graph.allData (data)=>
+      content_Service.save_Triplets data, ->
+        tm_Guidance.importService.graph.deleteDb ->
+          next()
 
-            '... creating search mappings'.log()
-            search_Artifacts.create_Search_Mappings ->
-              "... data generation complete".log()
+step_4 = (next)->
+  '[step 4] creating search mappings'.log()
+  search_Artifacts.create_Search_Mappings ->
+    next()
+
+step_1 ->
+  step_2 ->
+    step_3 ->
+      step_4 ->
+        console.timeEnd timer_Msg
+        "".log()
 
 
 
