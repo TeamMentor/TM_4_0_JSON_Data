@@ -116,5 +116,10 @@ class Content_Service
         data[file_Key] = file_Data
       data
 
+  save_Triplets: (data,callback)=>
+    target_Folder = @.folder_Lib_UNO_Json.path_Combine('Graph_Data').folder_Create()
+    target_File   = target_Folder.path_Combine 'lib-uno-triplets.json'
+    data.save_Json target_File
+    callback target_File
 
 module.exports = Content_Service

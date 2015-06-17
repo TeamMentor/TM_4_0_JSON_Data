@@ -1,5 +1,5 @@
-Search_Artifacts_Service = require '../src/services/Search-Artifacts-Service'
-Content_Service          = require '../src/services/Content-Service'
+Search_Artifacts_Service = require '../../src/services/Search-Artifacts-Service'
+Content_Service          = require '../../src/services/Content-Service'
 
 describe '| Search-Artifacts-Service |', ->
   search_Artifacts = null
@@ -46,7 +46,7 @@ describe '| Search-Artifacts-Service |', ->
       data.links       .assert_Is_Bigger_Than 0
       done()
 
-  it.only 'parse_Articles', (done)->
+  it 'parse_Articles', (done)->
     @.timeout 60000
     size = -1
     console.time 'parse_Articles'

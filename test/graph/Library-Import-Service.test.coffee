@@ -1,4 +1,3 @@
-return
 Import_Service         = require '../../src/graph/Import-Service'
 #Library_Import_Service = require '../../../src/services/import/Library-Import-Service'
 

@@ -1,5 +1,3 @@
-return
-
 path            = require 'path'
 async           = require 'async'
 Content_Service = require '../../src/graph/Content-Service'
@@ -13,17 +11,8 @@ describe '| services | import | Content-Service |', ->
 
   it 'constructor',->
     using contentService, ->
-      @.options    .assert_Is {}
       #@.content_Folder .assert_Contains '.tmCache'
-      @.current_Library.assert_Is 'Lib_UNO'
-
-
-  it 'construtor (with params)',->
-    options = { current_Library: 'efg'}
-    using new Content_Service(options), ->
-      @.options    .assert_Is(options)
-      @.current_Library.assert_Is(options.current_Library )
-
+      @.current_Library.assert_Contains 'Lib_UNO'
 
   it 'library_Folder', (done)->
     using contentService,->

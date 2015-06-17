@@ -1,7 +1,6 @@
-return
-
 TM_Guidance      = require '../../src/graph/TM-Guidance'
 Import_Service   = require '../../src/graph/Import-Service'
+Content_Service   = require '../../src/services/Content-Service'
 
 describe '| graph | TM-Guidance.test', ->
 
@@ -61,23 +60,19 @@ describe '| graph | TM-Guidance.test', ->
                   data.assert_Size_Is(36)
                   done()
 
-  it 'load_Data (and save it)', (done)->
+  it.only 'load_Data (and save it)', (done)->
     @timeout 20000
     using tmGuidance, ()->
       @.load_Data ()=>
         @.importService.graph.allData (data)=>
           data.assert_Size_Is_Bigger_Than(1700)                            # there should be a large number of triplets
-          @.importService.graph.db.nav('Library').archIn('is')
-                        .solutions (err,data) ->
-                            data.assert_Size_Is 1
-
-                            #move this into a class
-                            target_Folder = './Lib_UNO-json'.assert_Folder_Exists()
-                                                            .path_Combine('Graph_Data').folder_Create().assert_Folder_Exists()
-                            target_File   = target_Folder.path_Combine 'lib-uno-triplets.json'
-                            using tmGuidance, ()->
-                              @.importService.graph.allData (data)=>
-                                data.save_Json target_File
-                                target_File.assert_File_Exists()
-
-                                done()
+          @.importService.graph.db
+            .nav('Library')
+            .archIn('is')
+            .solutions (err,data) ->
+              data.assert_Size_Is 1
+              using tmGuidance, ()->
+                @.importService.graph.allData (data)=>
+                  new Content_Service().save_Triplets data, (triplets_File)->
+                    triplets_File.assert_File_Exists()
+                    done()
