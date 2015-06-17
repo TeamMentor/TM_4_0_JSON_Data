@@ -48,38 +48,44 @@ class Search_Artifacts_Service
   parse_Article: (article_Id, callback)=>
     folder = @.content_Service.folder_Articles_Html()
 
-    key = folder.path_Combine "#{article_Id}.json"
+    data_Folder = folder.path_Combine "#{article_Id.substring(0,2)}"
+    data_File   = data_Folder.path_Combine "#{article_Id}.json"
+    html_File   = data_Folder.path_Combine "#{article_Id}.html"
 
-    callback null, true
-    log key.file_Contents().size()
-    return
-
-    if key.file_Exists() and false
+    if data_File.file_Exists()
       setImmediate ->
-        callback key.load_Json(), false
+        callback null
     else
-      @.parse_Article_Html article_Id, (data)=>
+      #"[parse_Article] creating html for #{article_Id}".log()
+      @.parse_Article_Html article_Id, (data, html)=>
+        data_Folder.folder_Create()
         if (data)
-          data.save_Json key
+          data.save_Json data_File
+        if (html)
+          html.save_As html_File
         setImmediate ->
-          callback data, true
+          callback data
 
   parse_Articles: (article_Ids, callback)=>
-    results = []
-    if article_Ids is undefined or article_Ids is null
-      return callback results
+    #results = []
+    return callback() unless article_Ids # is undefined or article_Ids is null
+
+      #return callback results
     total = article_Ids.size()
-    count = 0
+    count  = 0
+    mapped = 0;
     map_Article = (article_Id, next)=>
-      @.parse_Article article_Id, (data, showLog)->
+      @.parse_Article article_Id, (data)->
         count++
-        if showLog and (count %% 50) is 0
-          log "[#{count}/#{total}] mapping #{article_Id}"
+        mapped++ if data
+        if  (mapped %% 50) is 1
+          log "[parse_Articles] mapped: #{mapped} count: #{count} total: #{total}"
         #results.push data
         next()
 
-    async.eachSeries article_Ids , map_Article, ()=>
-      callback results
+    async.eachSeries article_Ids , map_Article, callback
+    #()=>
+    #  callback results
 
   parse_Article_Html: (article_Id, callback)=>
     data =
@@ -91,9 +97,7 @@ class Search_Artifacts_Service
 
     @.article.html article_Id, (html)=>
       return callback null if not html
-      data.html     = html
-      data.checksum = html.checksum() # checksum(html,'sha1')
-
+      data.checksum = html.checksum()
       $ = cheerio.load html
 
       $('*').each (index,item)->
@@ -105,8 +109,8 @@ class Search_Artifacts_Service
           attrs.text = $tag.text()
           data.links.push attrs
 
-        data.tags[tagName] ?= []
-        data.tags[tagName].push(text.trim())
+        #data.tags[tagName] ?= []                   # this had quite a big performance implication (35% more in size)
+        #data.tags[tagName].push(text.trim())       # and it is not being used
         for word in text.split(' ')
           word = word.trim().lower().replace(/[,\.;\:\n\(\)\[\]<>]/,'')     # this has some performance implications (from 9ms to 18ms) and it might be better to do it on data consolidation
           if word and word isnt ''
@@ -122,22 +126,22 @@ class Search_Artifacts_Service
             if data.words[word] is undefined or typeof data.words[word] is 'function'
               data.words[word] = []
             data.words[word].push('title')
-        callback data
+        callback data, html
 
-  raw_Articles_Html: (callback)=>
-    @.content_Service.search_Data_Folder (data_Folder)=>
-      key = data_Folder.path_Combine 'raw_articles_html.json'
-      if key.file_Exists()
-        callback key.load_Json()
-      else
-        "no key for raw_Articles_Html, so calculating them all".log()
-        @.batch_Parse_All_Articles =>
-          @.content_Service.articles_Html_Folder (html_Folder)=>
-            raw_Articles_Html = []
-            for file in html_Folder.files()
-              raw_Articles_Html.push file.load_Json()
-
-            raw_Articles_Html.save_Json key
-            callback raw_Articles_Html
+  #raw_Articles_Html: (callback)=>
+  #  @.content_Service.search_Data_Folder (data_Folder)=>
+  #    key = data_Folder.path_Combine 'raw_articles_html.json'
+  #    if key.file_Exists()
+  #      callback key.load_Json()
+  #    else
+  #      "no key for raw_Articles_Html, so calculating them all".log()
+  #      @.batch_Parse_All_Articles =>
+  #        @.content_Service.articles_Html_Folder (html_Folder)=>
+  #          raw_Articles_Html = []
+  #          for file in html_Folder.files()
+  #            raw_Articles_Html.push file.load_Json()
+  #
+  #          raw_Articles_Html.save_Json key
+  #          callback raw_Articles_Html
 
 module.exports = Search_Artifacts_Service

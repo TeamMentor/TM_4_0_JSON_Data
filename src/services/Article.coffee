@@ -13,9 +13,9 @@ class Article
 
   file_Path: (article_Id, callback)=>
 
-    source_Files = @.contentService.map_Source_Files
+    source_Files = @.contentService.map_Source_Files()
     if source_Files[article_Id]
-      callback @.contentService.folder_Lib_UNO_Json.path_Combine source_Files[article_Id].json_File
+      callback @.contentService.folder_Library().path_Combine source_Files[article_Id].json_File
     else
       callback null
 
@@ -47,26 +47,12 @@ class Article
         callback null
 
   html: (article_Id, callback)=>
-    article_Checksums = 'articles_Checksums'.cache_Get() || {}
-
-    @.file_Path article_Id, (path)=>
-      #checksum    =  path.file_Contents().checksum()
-
-      callback null
-
-    return
     @.raw_Data article_Id, (data)=>
       html = null
       if data
         content = data.TeamMentor_Article.Content.first()
-
         dataType    = content['$'].DataType
         raw_Content = content.Data.first()
-
-        if article_Checksums[article_Id] is checksum
-          "... skipping #{article_Id}".log()
-          return callback null
-        "> creating html for #{article_Id}".log()
 
         switch (dataType.lower())
           when 'wikitext'
@@ -75,9 +61,6 @@ class Article
             html = new Markdown_Service().to_Html raw_Content
           else
             html = raw_Content
-
-        article_Checksums[article_Id] = checksum
-        'articles_Checksums'.cache_Set article_Checksums
       callback html
 
 
