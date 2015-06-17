@@ -1,7 +1,7 @@
 #Import_Service   = require '../services/data/Import-Service'
 Content_Service  = require './Content-Service'
-Wiki_Service     = require './render/Wiki-Service'
-Markdown_Service = require './render/Markdown-Service'
+Wiki_Service     = require '../render/Wiki-Service'
+Markdown_Service = require '../render/Markdown-Service'
 
 class Article
 

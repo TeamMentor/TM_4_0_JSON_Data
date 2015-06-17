@@ -1,6 +1,6 @@
 path            = require 'path'
 async           = require 'async'
-Content_Service = require '../src/Content-Service'
+Content_Service = require '../src/services/Content-Service'
 
 #NOTE: for now the order of these tests mater since they create artifacts used (in sequence)
 

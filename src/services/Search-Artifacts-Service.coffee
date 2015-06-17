@@ -77,8 +77,7 @@ class Search_Artifacts_Service
     map_Article = (article_Id, next)=>
       @.parse_Article article_Id, (data)->
         count++
-        mapped++ if data
-        if  (mapped %% 50) is 1
+        if data and  (++mapped %% 50) is 0
           log "[parse_Articles] mapped: #{mapped} count: #{count} total: #{total}"
         #results.push data
         next()

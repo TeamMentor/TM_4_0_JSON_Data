@@ -34,6 +34,8 @@ class Content_Service
 
     source_Xml_Files_Folder  = @.folder_Lib_UNO
     target_Json_Files_Folder = @.folder_Library()
+    html_Articles_Folder     = @.folder_Articles_Html()
+
 
     source_Files = @.map_Source_Files()  #library_Folder.files_Recursive(".xml")
     file_Ids     = source_Files.keys()
@@ -44,15 +46,14 @@ class Content_Service
 
       xml_File  = source_Xml_Files_Folder.path_Combine source_File.xml_File
       json_File = target_Json_Files_Folder.path_Combine source_File.json_File
+      data_File = html_Articles_Folder.path_Combine "#{id.substring(0,2)}/#{id}.json"
+
       source_File.checksum
 
-      #json_File = file.replace(library_Folder, json_Folder)
-      #                .replace('.xml','.json')
-
       json_File.parent_Folder().folder_Create()
-      contents = xml_File.file_Contents()
+      contents  = xml_File.file_Contents()
       checksum  = contents.checksum()
-      if source_File.checksum is checksum
+      if json_File.file_Exists() and source_File.checksum is checksum
         #"...skipping file #{source_File.xml_File}".log()
         next()
       else
@@ -64,6 +65,8 @@ class Content_Service
             json.save_Json(json_File)
             source_File.checksum  = checksum
             source_File.xml_Size  = contents.length
+            if data_File.file_Exists()
+              data_File.file_Delete()
           next()
 
     async.each file_Ids,convert_Xml_File, callback

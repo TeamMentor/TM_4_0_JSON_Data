@@ -1,5 +1,5 @@
-Search_Artifacts_Service = require '../src/Search-Artifacts-Service'
-Content_Service          = require '../src/Content-Service'
+Search_Artifacts_Service = require '../src/services/Search-Artifacts-Service'
+Content_Service          = require '../src/services/Content-Service'
 
 describe '| Search-Artifacts-Service |', ->
   search_Artifacts = null
@@ -46,16 +46,13 @@ describe '| Search-Artifacts-Service |', ->
       data.links       .assert_Is_Bigger_Than 0
       done()
 
-  it 'parse_Articles', (done)->
+  it.only 'parse_Articles', (done)->
     @.timeout 60000
     size = -1
     console.time 'parse_Articles'
-    article_Ids = article_Ids.take(size).take(100)
+    article_Ids = article_Ids.take(size)
     search_Artifacts.parse_Articles article_Ids, (results)->
       console.timeEnd 'parse_Articles'
-      for item in results
-        if item
-          item.id.assert_Is_String()
       done()
 
   xit 'raw_Articles_Html', (done)->
