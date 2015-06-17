@@ -60,7 +60,7 @@ describe '| graph | TM-Guidance.test', ->
                   data.assert_Size_Is(36)
                   done()
 
-  it.only 'load_Data (and save it)', (done)->
+  it 'load_Data (and save it)', (done)->
     @timeout 20000
     using tmGuidance, ()->
       @.load_Data ()=>

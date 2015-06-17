@@ -27,17 +27,12 @@ class Content_Service
     return (key for key in keys when key.split('-').size() is 5)
 
   convert_Xml_To_Json: (callback)=>
-    #json_Files = @.json_Files()
-    #if json_Files.not_Empty() and @.force_Reload is false
-    #  callback()
-    #else
-
     source_Xml_Files_Folder  = @.folder_Lib_UNO
     target_Json_Files_Folder = @.folder_Library()
     html_Articles_Folder     = @.folder_Articles_Html()
 
 
-    source_Files = @.map_Source_Files()  #library_Folder.files_Recursive(".xml")
+    source_Files = @.map_Source_Files()
     file_Ids     = source_Files.keys()
 
     convert_Xml_File = (id, next)=>
@@ -69,8 +64,9 @@ class Content_Service
               data_File.file_Delete()
           next()
 
-    async.each file_Ids,convert_Xml_File, callback
-    'source_Files'.cache_Set source_Files
+    async.each file_Ids,convert_Xml_File, ->
+      'source_Files'.cache_Set source_Files
+      callback()
 
   json_Files: ()=>
     'json_Files'.cache_Use (callback)=>
@@ -99,21 +95,22 @@ class Content_Service
   #  .folder_Create()
 
 
-  folder_Search_Data: (callback)=>
+  folder_Search_Data: ()=>
     @.folder_Lib_UNO_Json.path_Combine 'Search_Data'
                          .folder_Create()
 
   map_Source_Files: ()=>
-    'source_Files'.cache_Use (callback)=>
+    'source_Files'.cache_Use ()=>
       data = {}
       for file in @.folder_Lib_UNO.files_Recursive(".xml")
         file_Key = file.file_Name_Without_Extension()
-        file_Data =
+        mapping =
           xml_File  : file.remove @.folder_Lib_UNO
-          json_File : file.remove(@.folder_Lib_UNO).replace('.xml','.json')
-          checksum  : null
-          xml_Size  : null
-        data[file_Key] = file_Data
+          #checksum  : null
+          #xml_Size  : null
+        mapping.json_File = mapping.xml_File.replace('.xml','.json')
+        mapping.data_File = "/#{file_Key.substring(0,2)}/#{file_Key}.json"
+        data[file_Key] = mapping
       data
 
   save_Triplets: (data,callback)=>

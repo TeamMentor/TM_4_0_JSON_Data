@@ -15,6 +15,6 @@ global.config =
     folder_Lib_UNO          : root_Folder.path_Combine 'data/Lib_UNO'
     folder_Lib_UNO_Json     : root_Folder.path_Combine 'data/Lib_UNO-json'
 
-global.config.tm_graph.folder_Lib_UNO.assert_Folder_Exists()
-                                     .path_Combine('Mappings')
-                                     .cache_Set_Target_Folder()
+global.config.tm_graph.folder_Lib_UNO_Json.assert_Folder_Exists()
+                      .path_Combine('Mappings')
+                      .cache_Set_Target_Folder()

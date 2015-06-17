@@ -12,7 +12,6 @@ content_Service  = new Content_Service()
 importService    = new Import_Service(name: '_tm_uno_test')
 tm_Guidance      = new TM_Guidance { importService : importService}
 
-
 "... convert Xml files into Json".log()
 content_Service.convert_Xml_To_Json ->
   article_Ids = content_Service.article_Ids()
@@ -26,7 +25,10 @@ content_Service.convert_Xml_To_Json ->
         content_Service.save_Triplets data, ->
           "... deleteting temp db".log()
           tm_Guidance.importService.graph.deleteDb ->
-            "... data generation complete".log()
+
+            '... creating search mappings'.log()
+            search_Artifacts.create_Search_Mappings ->
+              "... data generation complete".log()
 
 
 

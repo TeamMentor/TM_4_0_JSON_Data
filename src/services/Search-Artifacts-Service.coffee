@@ -31,19 +31,25 @@ class Search_Artifacts_Service
       @.parse_Articles article_Ids, callback
 
   create_Search_Mappings: (callback)=>
-    @.raw_Articles_Html (articles_Data)=>
-      search_Mappings = {}
-      for article_Data in articles_Data
+    source_Files = @.content_Service.map_Source_Files()
+
+    #@.raw_Articles_Html (articles_Data)=>
+    search_Mappings = {}
+    #for article_Data in articles_Data
+    for mapping in source_Files.values()
+      file_Path    =  @.content_Service.folder_Articles_Html().path_Combine(mapping.data_File)
+      article_Data = file_Path.load_Json()
+      if article_Data
         for word,where of article_Data.words
           if search_Mappings[word] is undefined or typeof search_Mappings[word] is 'function'
             search_Mappings[word] = {}
           search_Mappings[word][article_Data.id] =  where : where #.unique()
 
 
-      @.content_Service.search_Data_Folder (folder)=>
-        key = folder.path_Combine 'search_mappings.json'
-        search_Mappings.save_Json key
-        callback search_Mappings
+    target_Folder = @.content_Service.folder_Search_Data()
+    key = target_Folder.path_Combine 'search_mappings.json'
+    search_Mappings.save_Json key
+    callback search_Mappings
 
   parse_Article: (article_Id, callback)=>
     folder = @.content_Service.folder_Articles_Html()

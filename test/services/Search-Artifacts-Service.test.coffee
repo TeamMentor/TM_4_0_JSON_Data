@@ -61,7 +61,7 @@ describe '| Search-Artifacts-Service |', ->
       data.assert_Not_Empty()
       done()
 
-  xit 'create_Search_Mappings', (done)->
+  it.only 'create_Search_Mappings', (done)->
     @.timeout 0
     search_Artifacts.create_Search_Mappings ->
       done()
