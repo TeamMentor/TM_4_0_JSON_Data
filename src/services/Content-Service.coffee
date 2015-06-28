@@ -43,7 +43,7 @@ class Content_Service
       json_File = target_Json_Files_Folder.path_Combine source_File.json_File
       data_File = html_Articles_Folder.path_Combine "#{id.substring(0,2)}/#{id}.json"
 
-      source_File.checksum
+      return next() if xml_File.file_Not_Exists()
 
       json_File.parent_Folder().folder_Create()
       contents  = xml_File.file_Contents()

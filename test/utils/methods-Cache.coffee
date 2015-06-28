@@ -1,6 +1,6 @@
 require '../../src/utils/methods-Cache'
 
-describe '| services | Content-Service |', ->
+describe '| utils | methods-Cache |', ->
 
   test_Folder     = '_tmp_Cache_folder'
   original_Folder = ''.cache_Target_Folder()

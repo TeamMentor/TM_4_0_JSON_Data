@@ -4,7 +4,7 @@ Content_Service = require '../../src/services/Content-Service'
 
 #NOTE: for now the order of these tests mater since they create artifacts used (in sequence)
 
-describe '| Content-Service |', ->
+describe '| services | Content-Service |', ->
 
   contentService = null
 
@@ -38,6 +38,7 @@ describe '| Content-Service |', ->
     using contentService,->
       @.convert_Xml_To_Json ()=>
         jsons = @.json_Files()
+
         source_Files = @.map_Source_Files()
         jsons.keys().assert_Not_Empty()
                     .assert_Size_Is source_Files.keys().size() + 4
@@ -67,3 +68,14 @@ describe '| Content-Service |', ->
           #log article_Ids.size()
           #json_Files.assert_Size_Is article_Ids.size() + 1  # because the library XML should not be included (in this case UNO.XML)
         done();
+
+  describe 'Regression Tests', ->
+    it 'Issue 881 - Reload breaks on latest Lib_Uno changes', (done)->
+      using new Content_Service(), ->
+        source_Files =  @.map_Source_Files()                      # keep a copy of the original values
+        'source_Files'.cache_Set                                  # replace with bad values
+          '0010a1e4-6d8f-41a4-8eaf-000011112222':
+              xml_File:  '/Articles/AAAAAA.xml'                   # issue happened when xml_File did not exist
+        @.convert_Xml_To_Json ->
+          'source_Files'.cache_Set source_Files                   # restore original values
+          done()
