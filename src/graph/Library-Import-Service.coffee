@@ -57,6 +57,9 @@ class Library_Import_Service
       if (item.folder)
         for folder in item.folder
           library.articles = library.articles.concat(@.add_Json_Folder library.folders,  folder)
+      if (item.view)
+        for view in item.view
+          library.articles = library.articles.concat(@.add_Json_View library.views,  view)
     callback(library)
 
   library: (callback)=>

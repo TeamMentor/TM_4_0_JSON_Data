@@ -29,16 +29,15 @@ describe '| services | import | Library-Import-Service |', ->
 
   it 'parse_Library_Json', (done)->
     library_Import.library (library)->
-      library_Import.library_Json (library_Json)->
-        library_Import.library_Json (json)->
-          library_Import.parse_Library_Json (json), (_library)->
-            using _library, ->
-              @.id      .assert_Is library.id
-              @.name    .assert_Is library.name
-              @.folders .assert_Size_Is_Bigger_Than(0)
-              @.articles.assert_Size_Is_Bigger_Than(0)
-              @.views   .assert_Empty()
-              done()
+      library_Import.library_Json (json)->
+        library_Import.parse_Library_Json (json), (_library)->
+          using _library, ->
+            @.id      .assert_Is library.id
+            @.name    .assert_Is library.name
+            @.folders .assert_Size_Is_Bigger_Than(0)
+            @.articles.assert_Size_Is_Bigger_Than(0)
+            @.views   .assert_Size_Is(1)
+            done()
 
   it 'library', (done)->
     library_Import.library (library)->
