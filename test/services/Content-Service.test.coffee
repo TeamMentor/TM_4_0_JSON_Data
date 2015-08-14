@@ -67,6 +67,7 @@ describe '| services | Content-Service |', ->
       @timeout(8000)
       counter =0
       using contentService,->
+        existingHtmlFiles = @.map_Source_Files().keys().size()
         check_File = (xml_File, next)=>
           article_Id  = xml_File.file_Name().remove('.xml')
           using graphContentService,->
@@ -77,8 +78,9 @@ describe '| services | Content-Service |', ->
               summary.assert_Not_Empty()
               summary.length.assert_Bigger_Than(30)
               next()
-        async.each @.map_Source_Files().keys().take(3022), check_File, done
-        counter.assert_Is 3022
+        async.each @.map_Source_Files().keys(), check_File, done
+
+        existingHtmlFiles.assert_Is(counter)
 
     it 'article_Ids', (done)->
       using contentService,->
