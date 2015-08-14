@@ -1,15 +1,18 @@
-path            = require 'path'
-async           = require 'async'
-Content_Service = require '../../src/services/Content-Service'
+path                  = require 'path'
+async                 = require 'async'
+Content_Service       = require '../../src/services/Content-Service'
+Graph_Content_Service = require '../../src/graph/Content-Service'
+cheerio               = require 'cheerio'
 
 #NOTE: for now the order of these tests mater since they create artifacts used (in sequence)
 
 describe '| services | Content-Service |', ->
 
-  contentService = null
-
+  contentService     = null
+  graphContentService = null
   before ->
-    contentService  = new Content_Service()
+    contentService     = new Content_Service()
+    graphContentService = new Graph_Content_Service
 
   it 'constructor',->
     using contentService, ->
@@ -59,6 +62,23 @@ describe '| services | Content-Service |', ->
           next()
 
         async.each @.map_Source_Files().keys().take(5), check_File, done
+
+    it 'article_Summary_NotEmpty', (done)->
+      @timeout(8000)
+      counter =0
+      using contentService,->
+        check_File = (xml_File, next)=>
+          article_Id  = xml_File.file_Name().remove('.xml')
+          using graphContentService,->
+            @.article_Html article_Id, (rawHtml)=>
+              $          = cheerio.load(rawHtml)
+              summary    = $('p').text().substring(0,200).trim()
+              counter = counter + 1
+              summary.assert_Not_Empty()
+              summary.length.assert_Bigger_Than(30)
+              next()
+        async.each @.map_Source_Files().keys().take(3022), check_File, done
+        counter.assert_Is 3022
 
     it 'article_Ids', (done)->
       using contentService,->

@@ -1,6 +1,6 @@
 async             = require 'async'
 cheerio           = require 'cheerio'
-
+Content_Service   = require '../graph/Content-Service'
 if not library_Name
   library_Name = 'Guidance'
 
@@ -14,6 +14,7 @@ class TM_Guidance
     @.library_Name      = 'Guidance'
     @.metadata_Queries  = null
     @.library_Name = if (global.request_Params) then global.request_Params.query['library'] else null
+    @.contentService = new Content_Service()
 
   setupDb: (callback)=>
     @.importService.graph.deleteDb =>
@@ -57,15 +58,13 @@ class TM_Guidance
         importUtil.add_Triplet(article_Id        , target.lower(), target_Value)
 
     add_Article_Summary = ()=>
-      html       = article_Data.Content.first().Data.first()
-      summary    = ""
-      if (article_Data.Content.first()['$'].DataType.lower() is 'html')
-        $          = cheerio.load(html.substring(0,1050))
+      id = article_Id.remove("article-")
+      @.contentService.article_Html id, (convertedHtml)=>
+        html       = convertedHtml
+        summary    = ""
+        $          = cheerio.load(html)
         summary    = $('p').text().substring(0,200).trim()
-      else
-        summary = html.substring(0,200).replace(/\*/g,'').replace(/\=/g,'')
-
-      importUtil.add_Triplet(article_Id, 'summary', summary)
+        importUtil.add_Triplet(article_Id, 'summary', summary)
 
     add_Article_Tag = ()=>
       technology_Value = article_Data.Metadata.first().Technology?.first()
