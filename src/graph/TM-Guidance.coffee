@@ -13,8 +13,8 @@ class TM_Guidance
     @.library           = null
     @.library_Name      = 'Guidance'
     @.metadata_Queries  = null
-    @.library_Name = if (global.request_Params) then global.request_Params.query['library'] else null
-    @.contentService = new Content_Service()
+    @.library_Name      = if (global.request_Params) then global.request_Params.query['library'] else null
+    @.contentService    = new Content_Service()
 
   setupDb: (callback)=>
     @.importService.graph.deleteDb =>
