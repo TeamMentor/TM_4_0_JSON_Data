@@ -9,11 +9,14 @@ take = -1
 class TM_Guidance
   constructor: (options)->
     @.options = options || {}
-    @.importService     = @options.importService
-    @.library           = null
-    @.library_Name      = 'Guidance'
-    @.metadata_Queries  = null
-    @.library_Name = if (global.request_Params) then global.request_Params.query['library'] else null
+    @.importService            = @options.importService
+    @.library                  = null
+    @.library_Name             = 'Guidance'
+    @.metadata_Queries         = null
+    @.library_Name             = if (global.request_Params) then global.request_Params.query['library'] else null
+    @.target_Folder            = global.config?.tm_graph?.folder_Lib_UNO
+    @.filter_Mapping_File_Name = @.target_Folder.path_Combine("filter_mappings.json")
+    @.filter_Queries           = null
 
   setupDb: (callback)=>
     @.importService.graph.deleteDb =>
@@ -23,11 +26,20 @@ class TM_Guidance
           callback()
 
   create_Metadata_Global_Nodes: (next)=>
-    @.metadata_Queries  = {}
+    @.metadata_Queries   = {}
+    @.filter_Queries     = {}
+    #Filter queries.
+    if (not @.filter_Mapping_File_Name.file_Exists())
+      @.filter_Mapping_File_Name.file_Create()
+    else
+      @.filter_Queries =  @.filter_Mapping_File_Name.load_Json()
+
+
     importUtil = @.importService.graph_Add_Data.new_Data_Import_Util()
 
     add_Metadata_Global_Node = (target)=>
       target_Id = @.importService.graph_Add_Data.new_Short_Guid('query')
+
       importUtil.add_Triplet target_Id, 'title', target
       importUtil.add_Triplet target_Id, 'is', 'Query'
       importUtil.add_Triplet target_Id, 'is', 'Metadata'
@@ -49,9 +61,17 @@ class TM_Guidance
         target_Id        = @.metadata_Queries[target_Value]
 
         if not target_Id
-          target_Id = @.metadata_Queries[target_Value] = @.importService.graph_Add_Data.new_Short_Guid('query')
+          if @.filter_Queries[target_Value]
+            target_Id = @.filter_Queries[target_Value]
+          else
+            target_Id                      = @.importService.graph_Add_Data.new_Short_Guid('query')
+            @.filter_Queries[target_Value] = target_Id
+            @.filter_Mapping_File_Name.file_Write(JSON.stringify(@.filter_Queries,null,4))
+
+          @.metadata_Queries[target_Value] = target_Id
           importUtil.add_Triplet(target_Id       , 'is','Query')
           importUtil.add_Triplet(target_Global_Id, 'contains-query',target_Id)
+
         importUtil.add_Triplet(target_Id         , 'contains-article', article_Id)
         importUtil.add_Triplet(target_Id         , 'title', target_Value)
         importUtil.add_Triplet(article_Id        , target.lower(), target_Value)
