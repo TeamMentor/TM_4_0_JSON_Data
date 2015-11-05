@@ -119,18 +119,20 @@ class Search_Artifacts_Service
         for word in text.split(' ')
           word = word.trim().lower().replace(/[,\.;\:\n\(\)\[\]<>]/,'')     # this has some performance implications (from 9ms to 18ms) and it might be better to do it on data consolidation
           if word and word isnt ''
-            if data.words[word] is undefined or typeof data.words[word] is 'function' # need to do this in order to avoid confict with js build in methods (like constructor)
-              data.words[word] = []
-            data.words[word].push(tagName)
+            for temp in word.split('-')
+              if data.words[temp] is undefined or typeof data.words[temp] is 'function' # need to do this in order to avoid confict with js build in methods (like constructor)
+                data.words[temp] = []
+              data.words[temp].push(tagName)
 
       @.article.raw_Data article_Id, (raw_Data)->
         title = raw_Data.TeamMentor_Article.Metadata[0].Title.first()
         for word in title.split(' ')
           word = word.trim().lower().replace(/[,\.;\:\n\(\)\[\]<>]/,'')
           if word isnt ''
-            if data.words[word] is undefined or typeof data.words[word] is 'function'
-              data.words[word] = []
-            data.words[word].push('title')
+            for temp in word.split('-')
+              if data.words[temp] is undefined or typeof data.words[temp] is 'function'
+                data.words[temp] = []
+              data.words[temp].push('title')
         callback data, html
 
   #raw_Articles_Html: (callback)=>
