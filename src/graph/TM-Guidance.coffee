@@ -86,10 +86,16 @@ class TM_Guidance
 
     add_Article_Tag = ()=>
       technology_Value = article_Data.Metadata.first().Technology?.first()
-      tag_Value        = article_Data.Metadata.first().Tag?.first()
-      if not tag_Value                                                    # if there is not Tag value, use the technology value
-        tag_Value = technology_Value?.split(' ').join(',')                # splited by space and joined by comma
-      importUtil.add_Triplet(article_Id  , 'tags', tag_Value || "")       # the metadata called it Tag but it better to normalize it to tags
+      tag_Value        = article_Data.Metadata.first().Tag?.first()   #reading tags
+      tag_Phase        = article_Data.Metadata.first().Phase?.first() #reading tags
+      tag_Type         = article_Data.Metadata.first().Type?.first()  #reading tags
+
+      #Adding the technology as tags
+      importUtil.add_Triplet(article_Id  , 'tags', technology_Value?.split(' ').join(',')  || "")
+
+      if tag_Value? then  importUtil.add_Triplet(article_Id  , 'tags', tag_Value || "")
+      if tag_Phase? then  importUtil.add_Triplet(article_Id  , 'tags', tag_Phase || "")
+      if tag_Type?  then  importUtil.add_Triplet(article_Id  , 'tags', tag_Type  || "")
 
     add_Metadata_Target(target) for target in ['Phase', 'Technology', 'Type'] # 'Category'
     add_Article_Summary();
