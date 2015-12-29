@@ -100,10 +100,15 @@ class Content_Service
                          .folder_Create()
 
   map_Source_Files: ()=>
+    xml_File    = @.folder_Lib_UNO.path_Combine 'UNO.xml'
+    xml_Content = xml_File.file_Contents()
     'source_Files'.cache_Use ()=>
       data = {}
       for file in @.folder_Lib_UNO.files_Recursive(".xml")
         file_Key = file.file_Name_Without_Extension()
+        #Just converting articles in a view
+        if not xml_Content.contains(file_Key) && file_Key isnt 'UNO'
+          continue
         mapping =
           xml_File  : file.remove @.folder_Lib_UNO
           #checksum  : null
