@@ -23,7 +23,7 @@ class Content_Service
     #fileNames = (json_File.file_Name_Without_Extension() for json_File in @.json_Files())
     #article_Ids = (filename for filename in fileNames when filename.split('-').size() is 5)
     #callback article_Ids.take -1
-    keys = @.map_Source_Files().keys()
+    keys = @.map_Source_Files().keys_Own()
     return (key for key in keys when key.split('-').size() is 5)
 
   convert_Xml_To_Json: (callback)=>
@@ -33,7 +33,7 @@ class Content_Service
 
 
     source_Files = @.map_Source_Files()
-    file_Ids     = source_Files.keys()
+    file_Ids     = source_Files.keys_Own()
 
     convert_Xml_File = (id, next)=>
 

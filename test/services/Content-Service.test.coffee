@@ -43,8 +43,8 @@ describe '| services | Content-Service |', ->
         jsons = @.json_Files()
 
         source_Files = @.map_Source_Files()
-        jsons.keys().assert_Not_Empty()
-                    .assert_Size_Is source_Files.keys().size() + 4
+        jsons.keys_Own().assert_Not_Empty()
+                    .assert_Size_Is source_Files.keys_Own().size() + 4
         done()
 
   describe 'After load_Data |',->
@@ -61,13 +61,13 @@ describe '| services | Content-Service |', ->
               @.Content.assert_Is_Object()
           next()
 
-        async.each @.map_Source_Files().keys().take(5), check_File, done
+        async.each @.map_Source_Files().keys_Own().take(5), check_File, done
 
     it 'article_Summary_NotEmpty', (done)->
       @timeout(8000)
       counter =0
       using contentService,->
-        existingHtmlFiles = @.map_Source_Files().keys().size()
+        existingHtmlFiles = @.map_Source_Files().keys_Own().size()
         check_File = (xml_File, next)=>
           article_Id  = xml_File.file_Name().remove('.xml')
           using graphContentService,->
@@ -78,7 +78,7 @@ describe '| services | Content-Service |', ->
               summary.assert_Not_Empty()
               summary.length.assert_Bigger_Than(30)
               next()
-        async.each @.map_Source_Files().keys(), check_File, done
+        async.each @.map_Source_Files().keys_Own(), check_File, done
 
         existingHtmlFiles.assert_Is(counter)
 
