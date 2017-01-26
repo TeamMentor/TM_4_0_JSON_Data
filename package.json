@@ -25,6 +25,7 @@
     "fluentnode": "^0.6.5",
     "jscreole": "^0.9.0",
     "jsdom": "9.9.1",
+    "leveldown": "^1.5.3",
     "levelgraph": "^2.0.0",
     "levelup": "^1.3.3",
     "markdown-it": "^8.2.2",
