@@ -84,7 +84,7 @@ class Search_Artifacts_Service
       @.parse_Article article_Id, (data)->
         count++
         if data and  (++mapped %% 50) is 0
-          log "[parse_Articles] mapped: #{mapped} count: #{count} total: #{total}"
+          console.log( "[parse_Articles] mapped: #{mapped} count: #{count} total: #{total}")
         #results.push data
         next()
 

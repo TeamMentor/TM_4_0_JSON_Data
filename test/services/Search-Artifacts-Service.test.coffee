@@ -30,8 +30,8 @@ describe '| Search-Artifacts-Service |', ->
     search_Artifacts.parse_Article article_Id, (data)->
       data.id      .assert_Is article_Id
       data.checksum.assert_Is_String()
-      data.words.keys().assert_Is_Bigger_Than 50
-      data.tags .keys().assert_Is_Bigger_Than 1
+      data.words.keys_Own().assert_Is_Bigger_Than 50
+      data.tags .keys_Own().assert_Is_Bigger_Than 1
       data.links       .assert_Is_Bigger_Than 0
       done()
 
@@ -41,8 +41,8 @@ describe '| Search-Artifacts-Service |', ->
     search_Artifacts.parse_Article_Html article_Id, (data)->
       data.id      .assert_Is article_Id
       data.checksum.assert_Is_String()
-      data.words.keys().assert_Is_Bigger_Than 50
-      data.tags .keys().assert_Is_Bigger_Than 1
+      data.words.keys_Own().assert_Is_Bigger_Than 50
+      data.tags .keys_Own().assert_Is_Bigger_Than 1
       data.links       .assert_Is_Bigger_Than 0
       done()
 

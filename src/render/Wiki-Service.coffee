@@ -5,7 +5,7 @@ class Wiki_Service
   constructor: (options)->
     @jsdom    = jsdom.jsdom()
     @jscreole = new jscreole()
-    @window   = @jsdom.parentWindow
+    @window   = @jsdom.defaultView
 
   to_Html: (wiki_Text, callback)->
     div             = @window.document.createElement('div')

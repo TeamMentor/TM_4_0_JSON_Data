@@ -3,10 +3,11 @@ Data_Import_Util        = require './Data-Import-Util'
 Content_Service         = require './Content-Service'
 Library_Import_Service  = require './Library-Import-Service'
 levelgraph              = null
-
+levelup                 = null
 class Graph_Service
   dependencies: ->
     levelgraph        = require 'levelgraph'
+    levelup           = require("levelup");
 
   constructor: (options)->
     @.dependencies()
@@ -47,7 +48,7 @@ class Graph_Service
 
   openDb: (callback)->
     @.dbPath.parent_Folder().folder_Create()
-    @db = levelgraph(@dbPath)
+    @db = levelgraph(levelup(@dbPath))
     process.nextTick =>
       callback()
 
