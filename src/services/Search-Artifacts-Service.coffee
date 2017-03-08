@@ -116,8 +116,8 @@ class Search_Artifacts_Service
 
         #data.tags[tagName] ?= []                   # this had quite a big performance implication (35% more in size)
         #data.tags[tagName].push(text.trim())       # and it is not being used
-        for word in text.split(' ')
-          word = word.trim().lower().replace(/[,\.;\:\n\(\)\[\]<>]/,'')     # this has some performance implications (from 9ms to 18ms) and it might be better to do it on data consolidation
+        for word in text.split(/\s+/)
+          word = word.trim().lower().replace(/[,\.;\:\n\(\)\[\]<>\"]/g,'')     # this has some performance implications (from 9ms to 18ms) and it might be better to do it on data consolidation
           if word and word isnt ''
             for temp in word.split('-')
               if data.words[temp] is undefined or typeof data.words[temp] is 'function' # need to do this in order to avoid confict with js build in methods (like constructor)
